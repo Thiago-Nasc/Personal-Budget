@@ -1,13 +1,22 @@
 // criando class Despesa
 class Despesa {
     constructor(ano, mes, dia, tipo, descricao, valor) {
-        this.ano = ano
-        this.mes = mes
-        this.dia = dia
-        this.tipo = tipo
-        this.descricao = descricao
-        this.valor = valor
+        this.ano = ano;
+        this.mes = mes;
+        this.dia = dia;
+        this.tipo = tipo;
+        this.descricao = descricao;
+        this.valor = valor;
     }
+
+    validarDados() {
+        for (let i in this) {
+            if (this[i] == undefined || this[i] == "" || this[i] == null) {
+                return false;
+            }
+        }
+        return true;
+    };
 }
 
 class Bd {
@@ -44,7 +53,7 @@ function cadastrarDespesa() {
     let descricao = document.querySelector('#descricao');
     let valor = document.querySelector('#valor');
     
-    let despesa1 = new Despesa(
+    let despesa = new Despesa(
         ano.value,
         mes.value,
         dia.value,
@@ -53,5 +62,12 @@ function cadastrarDespesa() {
         valor.value
     );
 
-    bd.armazenarDespesa(despesa1);
-}
+    if (despesa.validarDados()) {
+        //true
+        bd.armazenarDespesa(despesa);
+        alert('Despesa cadastrada com sucesso.');
+    } else {
+        //false
+        alert('Existem campos obrigatórios que não foram preenchidos!');
+    };
+};
