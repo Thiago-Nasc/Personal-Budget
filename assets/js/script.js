@@ -42,12 +42,25 @@ class Bd {
         localStorage.setItem(id, JSON.stringify(despesa));
     };
 
-    //recuperando despesas
+    // exibindo despesas
     recuperarDespesas() {
+
+        // arraay despesas
+        let despesas = [];
+
+        //recuperando despesas
         let quantidadeItem = localStorage.getItem('id');
         for (let c = 1; c <= quantidadeItem; c++) {
-            console.log(localStorage.getItem(`${c}`));
+            let despesa = JSON.parse(localStorage.getItem(`${c}`));
+
+            // checando se o obejto/despesa é null/ foi removido
+            if (despesa === null) {
+                continue;
+            };
+            despesas.push(despesa);
         };
+        
+        return despesas;
     };
 }
 
@@ -86,5 +99,39 @@ function cadastrarDespesa() {
 
 // chamando função exibirDespesas
 function exibirDespesas() {
-    bd.recuperarDespesas();
+
+    let despesas = bd.recuperarDespesas();
+
+    // selecionando tabela
+    let listaDespesas = document.querySelector("#listaDespesas");
+
+    // exibindo despesas na tabela
+    let quantDespesas = despesas.length;
+    for (let c = 0; c < quantDespesas; c++) {
+        
+        // criando linhas
+        function criarLinhaTabela() {
+
+            let linha = document.createElement('tr');
+            listaDespesas.appendChild(linha);
+
+            for (let i = 0; i < Object.keys(despesas[c]).length; i++) {
+            
+                let arrayIndices = Object.values(despesas[c]);
+                // criando colunas
+                let column = document.createElement('td');
+                linha.appendChild(column);
+                // inserindo valores nas colunas
+                column.innerHTML = `${arrayIndices[i]}`;                
+       
+
+            };
+
+        };
+
+        criarLinhaTabela();
+        
+    };
+
+    
 };
