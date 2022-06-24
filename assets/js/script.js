@@ -8,7 +8,7 @@ class Despesa {
         this.descricao = descricao;
         this.valor = valor;
     }
-
+    // validando dados
     validarDados() {
         for (let i in this) {
             if (this[i] == undefined || this[i] == "" || this[i] == null) {
@@ -18,25 +18,36 @@ class Despesa {
         return true;
     };
 }
-
+// estabelecendo ligação com localStorage
 class Bd {
     constructor() {
 
+        // criando id inicial
         let id = localStorage.getItem('id');
         if (id === null) {
             localStorage.setItem('id', 0);
         };
     }
 
+    // criando id dinãmico
     getProximoId() {
         let proximoId = localStorage.getItem('id');
         return  Number(proximoId) + 1;
     };
 
+    // amrmazenando despesas
     armazenarDespesa(despesa) {
         let id = this.getProximoId();
         localStorage.setItem('id', id);
         localStorage.setItem(id, JSON.stringify(despesa));
+    };
+
+    //recuperando despesas
+    recuperarDespesas() {
+        let quantidadeItem = localStorage.getItem('id');
+        for (let c = 1; c <= quantidadeItem; c++) {
+            console.log(localStorage.getItem(`${c}`));
+        };
     };
 }
 
@@ -62,6 +73,7 @@ function cadastrarDespesa() {
         valor.value
     );
 
+    //retornando resposta da tentativa de cadastro
     if (despesa.validarDados()) {
         //true
         bd.armazenarDespesa(despesa);
@@ -70,4 +82,9 @@ function cadastrarDespesa() {
         //false
         alert('Existem campos obrigatórios que não foram preenchidos!');
     };
+};
+
+// chamando função exibirDespesas
+function exibirDespesas() {
+    bd.recuperarDespesas();
 };
