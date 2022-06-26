@@ -101,78 +101,65 @@ function cadastrarDespesa() {
 function exibirDespesas() {
 
     let despesas = bd.recuperarDespesas();
+    // invertendo array para exibir as novas despesas no início
+    despesas.reverse();
 
     // selecionando tabela
     let listaDespesas = document.querySelector("#listaDespesas");
 
     // exibindo despesas na tabela
-    let quantDespesas = despesas.length;
-    for (let c = 0; c < quantDespesas; c++) {
+    for (let c = 0; c < despesas.length; c++) {
         
-        // criando linhas
+        // criando linhas da tabela
+        let linha = document.createElement('tr');
+            listaDespesas.appendChild(linha);
+        
+        // função que cria a tabela ao fazer reload na página de consulta
         function criarTabela() {
 
-            let linha = document.createElement('tr');
-            listaDespesas.appendChild(linha);
+            let arrayDespesa = despesas[c];
 
+            //c criando array para armezenar os valores formados que serão exibidos na tabela
             let arrayValoresList = [];
 
-            for (let i = 0; i < Object.keys(despesas[c]).length; i++) {
-            
-                let arrayValores = Object.values(despesas[c]);
-                let arrayChaves = Object.keys(despesas[c])[i];
-
-                                                    
-                // juntos valores de datas para criar o pradrão de data br dd/mm/aa
-                switch(arrayChaves) {
-                    case 'ano':
-                        arrayValoresList[0] = `${arrayValores[i]}`;
-                        break;
-                    case 'mes':
-                        arrayValoresList[0] = `0${arrayValores[i]} / ${arrayValoresList[0]}`;
-                        break;
-                    case 'dia':
-                        arrayValoresList[0] = `${arrayValores[i]} / ${arrayValoresList[0]}`;
-                        break;
-                    case 'tipo':
-
-                        // convertendo valores de tipos de despesas
-                        switch(arrayValores[i]) {
-                            case '1':
-                                arrayValoresList[1] = 'Alimentação';
-                                break;
-                            case '2':
-                                arrayValoresList[1] = 'Educação';
-                                break;
-                            case '3':
-                                arrayValoresList[1] = 'Lazer';
-                                break;
-                            case '4':
-                                arrayValoresList[1] = 'Saúde';
-                                break;
-                            case '5':
-                                arrayValoresList[1] = 'Transporte';
-                                break;
-                            };
-                        break;
-                        // fim da conversão dos tipos de despesas
-                    case 'descricao':
-                        arrayValoresList[2] = `${arrayValores[i]}`;
-                        break;
-                    case 'valor':
-                        arrayValoresList[3] = `${arrayValores[i]}`;                       
-                    break;
-                };
+            //atribuindo valores ao arrayValoresList
+            // formatando o mes para dois algarismos
+            let mesFormatado;
+            if (arrayDespesa['mes'].length == 1) {
+                mesFormatado = `0${arrayDespesa['mes']}`;
+            } else {
+                mesFormatado = arrayDespesa['mes'];
             };
+            arrayValoresList[0] = `${arrayDespesa['dia']} / ${mesFormatado} / ${arrayDespesa['ano']}`;
+            // formatando o tipo de despesa
+            switch (arrayDespesa['tipo']) {
+                case '1':
+                    arrayValoresList[1] = 'Alimentação';
+                    break;
+                case '2':
+                    arrayValoresList[1] = 'Educação';
+                    break;
+                case '3':
+                    arrayValoresList[1] = 'Lazer';
+                    break;
+                case '4':
+                    arrayValoresList[1] = 'Saúde';
+                    break;
+                case '5':
+                    arrayValoresList[1] = 'Transporte';
+                    break;
+            };
+            arrayValoresList[2] = `${arrayDespesa['descricao']}`;
+            arrayValoresList[3] = `${arrayDespesa['valor']}`;
 
-            // criando colunas e inserindo valores nas colunas
+            // criando colunas e inserindo valores nestas
             for (let q = 0; q < 4; q++) {
-                let column = document.createElement('td');
-                linha.appendChild(column);
-                column.innerHTML = `${arrayValoresList[q]}`; 
+                let coluna = document.createElement('td');
+                linha.appendChild(coluna);
+                coluna.innerHTML = arrayValoresList[q];
             };
         };
-
+        // chamando função criarTabela
         criarTabela();
     };
 };
