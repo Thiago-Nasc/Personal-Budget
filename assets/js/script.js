@@ -91,6 +91,12 @@ function cadastrarDespesa() {
         //true
         bd.armazenarDespesa(despesa);
         alert('Despesa cadastrada com sucesso.');
+        ano.value = '';
+        mes.value = '';
+        dia.value = '';
+        tipo.value = '';
+        descricao.value = '';
+        valor.value = '';
     } else {
         //false
         alert('Existem campos obrigatórios que não foram preenchidos!');
