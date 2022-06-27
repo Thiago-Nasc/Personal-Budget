@@ -62,6 +62,43 @@ class Bd {
         
         return despesas;
     };
+
+    pesquisar(despesa) {
+        // chamando método recupearDespesas
+        let despesasF = this.recuperarDespesas();
+
+        // filtrando ano
+        if (despesa.ano != '') {
+            despesasF = despesasF.filter(valor => valor.ano == despesa.ano);
+        };
+
+        // filtrando mês
+        if (despesa.mes != '') {
+            despesasF = despesasF.filter(valor => valor.mes == despesa.mes);
+        };
+
+        // filtrando dia
+        if (despesa.dia != '') {
+            despesasF = despesasF.filter(valor => valor.dia == despesa.dia);
+        };
+
+        // filtrando tipo
+        if (despesa.tipo != '') {
+            despesasF = despesasF.filter(valor => valor.tipo == despesa.tipo);
+        };
+
+        // filtrando descrição
+        if (despesa.descricao != '') {
+            despesasF = despesasF.filter(valor => valor.descricao == despesa.descricao);
+        };
+
+        // filtrando valor
+        if (despesa.valor != '') {
+            despesasF = despesasF.filter(valor => valor.valor == despesa.valor);
+        };
+
+        console.log(despesasF);
+    };
 }
 
 let bd = new Bd();
@@ -168,4 +205,19 @@ function exibirDespesas() {
         // chamando função criarTabela
         criarTabela();
     };
+};
+
+function pesquisarDespesa() {
+    
+    // Recuperando valores de entrada
+    let ano = document.querySelector('#ano').value;
+    let mes = document.querySelector('#mes').value;
+    let dia = document.querySelector('#dia').value;
+    let tipo = document.querySelector('#tipo').value;
+    let descricao = document.querySelector('#descricao').value;
+    let valor = document.querySelector('#valor').value;
+
+    let despesa = new Despesa(ano, mes, dia, tipo, descricao, valor);
+
+    bd.pesquisar(despesa);
 };
