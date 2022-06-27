@@ -97,7 +97,7 @@ class Bd {
             despesasF = despesasF.filter(valor => valor.valor == despesa.valor);
         };
 
-        console.log(despesasF);
+        return despesasF;
     };
 }
 
@@ -219,5 +219,65 @@ function pesquisarDespesa() {
 
     let despesa = new Despesa(ano, mes, dia, tipo, descricao, valor);
 
-    bd.pesquisar(despesa);
+    let arrayF = bd.pesquisar(despesa);
+
+    // selecionando e limpando tabela
+    let listaDespesas = document.querySelector("#listaDespesas");
+    listaDespesas.innerHTML = '';
+
+    // exibindo despesas na tabela
+    for (let c = 0; c < arrayF.length; c++) {
+        
+        // criando linhas da tabela
+        let linha = document.createElement('tr');
+            listaDespesas.appendChild(linha);
+        
+        // função que cria a tabela ao fazer reload na página de consulta
+        function criarTabela() {
+
+            let arrayDespesa = arrayF[c];
+
+            //c criando array para armezenar os valores formados que serão exibidos na tabela
+            let arrayValoresList = [];
+
+            //atribuindo valores ao arrayValoresList
+            // formatando o mes para dois algarismos
+            let mesFormatado;
+            if (arrayDespesa['mes'].length == 1) {
+                mesFormatado = `0${arrayDespesa['mes']}`;
+            } else {
+                mesFormatado = arrayDespesa['mes'];
+            };
+            arrayValoresList[0] = `${arrayDespesa['dia']} / ${mesFormatado} / ${arrayDespesa['ano']}`;
+            // formatando o tipo de despesa
+            switch (arrayDespesa['tipo']) {
+                case '1':
+                    arrayValoresList[1] = 'Alimentação';
+                    break;
+                case '2':
+                    arrayValoresList[1] = 'Educação';
+                    break;
+                case '3':
+                    arrayValoresList[1] = 'Lazer';
+                    break;
+                case '4':
+                    arrayValoresList[1] = 'Saúde';
+                    break;
+                case '5':
+                    arrayValoresList[1] = 'Transporte';
+                    break;
+            };
+            arrayValoresList[2] = `${arrayDespesa['descricao']}`;
+            arrayValoresList[3] = `${arrayDespesa['valor']}`;
+
+            // criando colunas e inserindo valores nestas
+            for (let q = 0; q < 4; q++) {
+                let coluna = document.createElement('td');
+                linha.appendChild(coluna);
+                coluna.innerHTML = arrayValoresList[q];
+            };
+        };
+        // chamando função criarTabela
+        criarTabela();
+    };
 };
