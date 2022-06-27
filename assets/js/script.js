@@ -57,6 +57,8 @@ class Bd {
             if (despesa === null) {
                 continue;
             };
+
+            despesa.id = c;
             despesas.push(despesa);
         };
         
@@ -98,6 +100,10 @@ class Bd {
         };
 
         return despesasF;
+    };
+
+    removerDespesa(item) {
+        localStorage.removeItem(item);
     };
 }
 
@@ -226,6 +232,21 @@ function exibirListaDespesas(arrayLista = array()) {
                 coluna.innerHTML = arrayValoresList[q];
             };
 
+            // excluindo despesa
+            let coluna = document.createElement('td');
+            linha.appendChild(coluna);
+
+            // criando botão de exclusão
+            let btn = document.createElement('button');
+            btn.className = 'btn btn-danger';
+            btn.innerHTML = '<i class="fas fa-times"></i>';
+            btn.id = arrayLista[c].id;
+            coluna.appendChild(btn);
+            btn.onclick = function() {
+                linha.remove();
+                bd.removerDespesa(this.id);
+            };
+            
         };
         // chamando função criarTabela
         criarTabela();
